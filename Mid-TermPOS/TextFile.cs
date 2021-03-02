@@ -6,7 +6,7 @@ namespace Mid_TermPOS
 {
     public class TextFile
     {
-        public static readonly string filePath = @"C:\PosApp\Products.txt";
+        public static readonly string filePath = @"C:\Users\Jasmi\Documents\GrandCircus\Products.txt";
 
         public static List<string> GetItems(string filePath)
         {

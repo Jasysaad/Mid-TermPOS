@@ -36,7 +36,7 @@ namespace Mid_TermPOS
 
             Console.WriteLine($"You have Selected {userAmountSelection} {item.Name} totaling : $ {orderItem.ItemTotal}  ");
 
-            DisplayRunningTotal(ShoppingCart);
+           DisplayRunningTotal(ShoppingCart);
             //Receipt.PrintTotal(ShoppingCart);
 
             //ShoppingCart.Add(new OrderItem());
@@ -47,7 +47,7 @@ namespace Mid_TermPOS
             //bool isPaymentCorrect = false;
             bool StillLooping = true;
             string paymentImput;
-
+            double cartTotal = DisplayRunningTotal(ShoppingCart);
 
             do
             {
@@ -58,15 +58,18 @@ namespace Mid_TermPOS
                 //--------------------------------------------------------------
                 while (paymentImput != "1" && paymentImput != "2" && paymentImput != "3")
                 {
+                    
                     Console.WriteLine("Sorry, " + paymentImput + " is not an option. \nHow would ypu like to pay \n1.Cash  \n2.Credit \n3.Check");
                     paymentImput = Console.ReadLine();
+
                 }
                 //-------------------------------------------------------------
                 if (paymentImput.Equals("1", StringComparison.OrdinalIgnoreCase))
                 {
                     StillLooping = false;
-                    Console.WriteLine("\nPlease Enter the Amount of Cash you will be paying with");
-
+                    // Console.WriteLine("\nPlease Enter the Amount of Cash you will be paying with");
+                    
+                    Cash(cartTotal);
                     //You can validate in this later 
                 }
                 else if (paymentImput.Equals("2", StringComparison.OrdinalIgnoreCase))
@@ -122,18 +125,40 @@ namespace Mid_TermPOS
             return paymentImput;
         }
 
-        public static void DisplayRunningTotal(List<OrderItem> shoppingCart)
+        public static double DisplayRunningTotal(List<OrderItem> shoppingCart)
         {
             var total = 0.00;
 
             foreach (var lineItem in shoppingCart)
             {
                 total += lineItem.ItemTotal;
+                
             }
-
-            Console.WriteLine("Your current total is: " + total.ToString("C2"));
+            var withTax = total * 1.06;
+            Console.WriteLine("Your cart total is: " + total.ToString("C2") + " + sales tax (6%) " + withTax.ToString("C2"));
+            return withTax;
         }
+        public static void Cash(double cartTotal)
+        {
+            double tendered = 0;
+            do
+            {
 
+                Console.WriteLine("Your total is $" + cartTotal + ". How much cash is tendered?");
+                double.TryParse(Console.ReadLine(), out tendered);
+                if (tendered < cartTotal)
+                {
+                    Console.WriteLine("Inadequate funds, try again.");
+                }
+
+            }
+            while (tendered < cartTotal);
+
+
+            double change = tendered - cartTotal;
+            Console.WriteLine("Your change back is: $" + change);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
         public static void GenerateReceiptForUser()//List<Product> ShoppingCart 
         {
             //var total = 0;

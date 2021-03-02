@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Mid_TermPOS
 {
@@ -62,7 +64,7 @@ namespace Mid_TermPOS
         {
             List<Product> output = new List<Product>();
 
-            List<string> storeItems = TextFile.GetItems(filePath);
+            List<string> storeItems = TextFile.GetItems(TextFile.filePath);
 
             foreach (var merch in storeItems)
             {
@@ -76,7 +78,7 @@ namespace Mid_TermPOS
                 products.Name = item[0];
                 products.Category = item[1];
                 products.Description = item[2];
-                decimal.TryParse(item[3], out decimal PriceOfItems);
+                double.TryParse(item[3], out double PriceOfItems);
                 products.PriceOfItems = PriceOfItems;
 
 
@@ -85,27 +87,7 @@ namespace Mid_TermPOS
             return output;
         }
 
-        public static void Cash(decimal cartTotal)
-        {
-            decimal tendered = 0;
-            do
-            {
-
-                Console.WriteLine("Your total is $" + cartTotal + ". How much cash is tendered?");
-                decimal.TryParse(Console.ReadLine(), out tendered);
-                if (tendered < cartTotal)
-                {
-                    Console.WriteLine("Inadequate funds, try again.");
-                }
-
-            }
-            while (tendered < cartTotal);
-
-
-            decimal change = tendered - cartTotal;
-            Console.WriteLine("Your change back is: $" + change);
-            Console.ForegroundColor = ConsoleColor.White;
-        }
+        
     }
 }
 
